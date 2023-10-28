@@ -7,7 +7,7 @@ public static class Demo
     {
         var sandwich = new Sandwich(Ingredient.Ham, Ingredient.Jelly, BreadType.WholeGrain);
 
-        WriteLine($"{sandwich}, {(sandwich.IsWholeGrain() ? "It's whole-grain!" : "It's not")}");
+        WriteLine($"{sandwich}, {(sandwich.IsWholeGrain() ? "it's whole-grain!" : "it's not")}");
 
         return Task.CompletedTask;
     }
@@ -36,7 +36,7 @@ public static class Demo
         public bool IsWholeGrain() => _breadType == BreadType.WholeGrain;
 
         public override string ToString() =>
-            $"{_breadType} bread with {FirstIngredient}{(_secondIngredient.HasValue ? $"and {_secondIngredient}" : "")}";
+            $"{_breadType} bread with {FirstIngredient}{(_secondIngredient.HasValue ? $" and {_secondIngredient}" : "")}";
     }
 
     #endregion
@@ -70,7 +70,7 @@ public static class Demo
 
     public enum BreadType { WholeGrain, Sourdough, Rye }
 
-    public class Food(string name);
+    public class Food(string name) { public string Name { get; } = name; }
 
     [AttributeUsage(AttributeTargets.Constructor)]
     public sealed class WillBeAppliedToTheConstructorAttribute : Attribute;

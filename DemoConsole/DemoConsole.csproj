@@ -14,11 +14,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <NoWarn>CA1707;7022</NoWarn>
+      <NoWarn>CA1034;CA1303;CA1707;CA2007;7022</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <NoWarn>CA1707;7022</NoWarn>
+      <NoWarn>CA1034;CA1303;CA1707;CA2007;7022</NoWarn>
     </PropertyGroup>
 
 </Project>

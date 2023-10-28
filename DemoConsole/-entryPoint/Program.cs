@@ -40,6 +40,7 @@ while (true)
     await (char.ToUpperInvariant(picked) switch
     {
         '1' => DemoConsole._1_PrimaryConstructors.Demo.Main(),
+        '2' => DemoConsole._2_CollectionExpressions.Demo.Main(),
         _ => Task.CompletedTask
     });
 
