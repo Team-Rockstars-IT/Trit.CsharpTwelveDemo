@@ -41,6 +41,7 @@ while (true)
     {
         '1' => DemoConsole._1_PrimaryConstructors.Demo.Main(),
         '2' => DemoConsole._2_CollectionExpressions.Demo.Main(),
+        '3' => DemoConsole._3_QualityOfLife.Demo.Main(),
         _ => Task.CompletedTask
     });
 
