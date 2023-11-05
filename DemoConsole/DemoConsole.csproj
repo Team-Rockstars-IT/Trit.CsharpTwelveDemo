@@ -11,14 +11,22 @@
         <AnalysisLevel>latest</AnalysisLevel>
         <AnalysisMode>All</AnalysisMode>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <InterceptorsPreviewNamespaces>Hijacked.DemoConsole.SourceGenerators</InterceptorsPreviewNamespaces>
+        <Features>InterceptorsPreview</Features>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <NoWarn>CA1034;CA1303;CA1707;CA2007;7022</NoWarn>
+      <NoWarn>CA1034;CA1303;CA1707;CA1815;CA2007;7022</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <NoWarn>CA1034;CA1303;CA1707;CA2007;7022</NoWarn>
+      <NoWarn>CA1034;CA1303;CA1707;CA1815;CA2007;7022</NoWarn>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DemoConsole.SourceGenerators\DemoConsole.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    </ItemGroup>
 
 </Project>

@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{7E3BE9EE-3
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoConsole.SourceGenerators", "DemoConsole.SourceGenerators\DemoConsole.SourceGenerators.csproj", "{F1161C74-0F79-4EC4-B8AC-726347705529}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C1921CB2-CED3-4BFD-A54C-9C74F8E7A616}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1921CB2-CED3-4BFD-A54C-9C74F8E7A616}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1921CB2-CED3-4BFD-A54C-9C74F8E7A616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1161C74-0F79-4EC4-B8AC-726347705529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1161C74-0F79-4EC4-B8AC-726347705529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1161C74-0F79-4EC4-B8AC-726347705529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1161C74-0F79-4EC4-B8AC-726347705529}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

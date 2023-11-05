@@ -8,16 +8,6 @@ while (true)
     Clear();
 
     /*
-     * Language features:
-     * ref readonly parameters as a replacement for `in` parameters, to disallow rvalue
-     * collection expressions (i.e. var a = [] {}), in combination with a custom collection builder?
-     * interceptors
-     * inline arrays
-     * nameof with instance members
-     * alias for any type
-     * Primary Constructors
-     * Lambda optional parameters
-     *
      * Other features to consider:
      * Private field access via attributes
      * System.Collections.Frozen
@@ -42,6 +32,8 @@ while (true)
         '1' => DemoConsole._1_PrimaryConstructors.Demo.Main(),
         '2' => DemoConsole._2_CollectionExpressions.Demo.Main(),
         '3' => DemoConsole._3_QualityOfLife.Demo.Main(),
+        '4' => DemoConsole._4_Performance.Demo.Main(),
+        '5' => DemoConsole._5_Interceptors.Demo.Main(),
         _ => Task.CompletedTask
     });
 
