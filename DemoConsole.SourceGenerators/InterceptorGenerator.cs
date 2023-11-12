@@ -11,21 +11,22 @@ public partial class Generator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        IncrementalValuesProvider<SyntaxAndPosition> classDeclarations =
+        IncrementalValuesProvider<FileLinePositionSpan> classDeclarations =
             context.SyntaxProvider
                 .CreateSyntaxProvider(
 
                     predicate: static (syntaxNode, _) =>
-                        syntaxNode is InvocationExpressionSyntax { Expression: IdentifierNameSyntax member } invocation
-                        && member.Identifier.ToString() == nameof(Console.WriteLine)
+                        syntaxNode is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax access } invocation
+                        && access.Name.ToString() == nameof(Console.WriteLine)
                         && invocation.ArgumentList.Arguments.Count == 1,
 
-                    transform: static (genContext, cancellationToken) => new SyntaxAndPosition(
-                        (InvocationExpressionSyntax)genContext.Node,
-                        genContext.Node.SyntaxTree.GetLineSpan(genContext.Node.Span, cancellationToken))
+                    transform: static (genContext, cancellationToken) =>
+                        genContext.Node.SyntaxTree.GetLineSpan(
+                            ((MemberAccessExpressionSyntax)((InvocationExpressionSyntax)genContext.Node).Expression).Name.Span,
+                            cancellationToken)
                 );
 
-        IncrementalValueProvider<(Compilation, ImmutableArray<SyntaxAndPosition>)> compilationAndClasses
+        IncrementalValueProvider<(Compilation, ImmutableArray<FileLinePositionSpan>)> compilationAndClasses
             = context.CompilationProvider.Combine(classDeclarations.Collect());
 
         context.RegisterSourceOutput(compilationAndClasses, (spc, source) => OnGenerate(spc, source.Item2));
@@ -33,7 +34,7 @@ public partial class Generator : IIncrementalGenerator
 
     private static void OnGenerate(
         SourceProductionContext context,
-        ImmutableArray<SyntaxAndPosition> input)
+        ImmutableArray<FileLinePositionSpan> input)
     {
         var builder = new StringBuilder();
 
@@ -54,17 +55,17 @@ public partial class Generator : IIncrementalGenerator
         builder.AppendLine("    public static class DateAndTimeAppenderIntercepterFactory");
         builder.AppendLine("    {");
         builder.AppendLine("        // FEATURE: Interceptors");
-        foreach (SyntaxAndPosition? item in input)
+        foreach (FileLinePositionSpan position in input)
         {
-            var line = item.Position.Span.Start.Line + 1;
-            var character = item.Position.Span.Start.Character + 1;
+            var line = position.Span.Start.Line + 1;
+            var character = position.Span.Start.Character + 1;
 
-            if (item.Position.Path.Contains("Interceptors"))
+            if (position.Path.Contains("Interceptors"))
             {
                 builder.AppendFormat(
                     CultureInfo.InvariantCulture,
                     "        [InterceptsLocation(@\"{0}\", {1}, {2})]\n",
-                    item.Position.Path.Replace(".\\", ""), line, character);
+                    position.Path.Replace(".\\", ""), line, character);
             }
         }
         builder.AppendLine("        public static void WriteLine(string? value) => System.Console.WriteLine($\"[{System.DateTime.UtcNow:o}]: {value}\");");
