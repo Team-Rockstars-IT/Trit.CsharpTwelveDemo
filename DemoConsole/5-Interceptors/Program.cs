@@ -4,8 +4,8 @@ public static class Demo
 {
     public static async Task Main()
     {
-        WriteLine("This will be prefixed by the date and time");
+        Console.WriteLine("This will be prefixed by the date and time");
         await Task.Delay(20);
-        WriteLine("And this too");
+        Console.WriteLine("And this too");
     }
 }

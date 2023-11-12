@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -60,7 +61,10 @@ public partial class Generator : IIncrementalGenerator
 
             if (item.Position.Path.Contains("Interceptors"))
             {
-                builder.AppendFormat("        [InterceptsLocation(@\"{0}\", {1}, {2})]\n", item.Position.Path.Replace(".\\", ""), line, character);
+                builder.AppendFormat(
+                    CultureInfo.InvariantCulture,
+                    "        [InterceptsLocation(@\"{0}\", {1}, {2})]\n",
+                    item.Position.Path.Replace(".\\", ""), line, character);
             }
         }
         builder.AppendLine("        public static void WriteLine(string? value) => System.Console.WriteLine($\"[{System.DateTime.UtcNow:o}]: {value}\");");

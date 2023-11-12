@@ -7,18 +7,21 @@ public static class Demo
         // BEFORE FEATURE: Collection Expressions
         var oldCookies = new List<Cookie>
         {
-            new ChocolateCookie(), new StrawberryCookie()
+            new Chocolate(), new Strawberry()
         };
 
         // FEATURE: Collection Expressions
         List<Cookie> noCookies = [ ];
-        List<Cookie> newCookies = [ new ChocolateCookie(), new StrawberryCookie() ];
-        List<Cookie> mergedCookies = [ ..newCookies, new ColaCookie(), ..noCookies ];
+        List<Cookie> newCookies = [ new Chocolate(), new Strawberry() ];
+        List<Cookie> mergedCookies = [
+            ..newCookies, new Cola(), ..noCookies
+        ];
 
         // BYOCB, Bring Your Own Collection Builder:
-        CookieJar<Cookie> myCookieJar = [ new ChocolateCookie(), new StrawberryCookie() ];
+        CookieJar<Cookie> myCookieJar = [ new Chocolate(), new Strawberry() ];
 
-        WriteLine($"{mergedCookies.Count} merged cookies and {myCookieJar.Count()} in the jar");
+        WriteLine($"{mergedCookies.Count} merged cookies " +
+                  $"and {myCookieJar.Count()} in the jar");
 
         return Task.CompletedTask;
     }
@@ -39,7 +42,8 @@ public static class Demo
 
     public static class CookieJarFactory
     {
-        public static CookieJar<TCookie> Create<TCookie>(ReadOnlySpan<TCookie> items) where TCookie : Cookie
+        public static CookieJar<TCookie> Create<TCookie>(ReadOnlySpan<TCookie> items)
+            where TCookie : Cookie
         {
             return new CookieJar<TCookie>(items);
         }
@@ -47,9 +51,9 @@ public static class Demo
 
     public class Cookie;
 
-    public class ChocolateCookie : Cookie;
+    public class Chocolate : Cookie;
 
-    public class StrawberryCookie : Cookie;
+    public class Strawberry : Cookie;
 
-    public class ColaCookie : Cookie;
+    public class Cola : Cookie;
 }

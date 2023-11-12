@@ -2,6 +2,30 @@
 
 public static class Demo
 {
+    // BEFORE FEATURE: ref readonly method parameters
+    public static ReadOnlySpan<int> OldCreateSpan(ref int c)
+    {
+        c++;
+        return new ReadOnlySpan<int>(ref c);
+    }
+
+    // FEATURE: ref readonly method parameters
+    public static ReadOnlySpan<int> NewCreateSpan(ref readonly int c)
+        => new ReadOnlySpan<int>(in c);
+
+    // BEFORE FEATURE: Inline arrays
+    public struct OldFourBeatMeasure
+    {
+        internal unsafe fixed int Notes[4];
+    }
+
+    // FEATURE: Inline arrays
+    [InlineArray(4)]
+    public struct FourBeatMeasure
+    {
+        private MusicalNote _note0;
+    }
+
     public static Task Main()
     {
         ref int mutableReferenceToFortyTwo = ref new FortyTwoHolder().FortyTwo;
@@ -23,7 +47,7 @@ public static class Demo
             WriteLine($"The old notes are: {n[0]}, {n[1]}, {n[2]}, {n[3]}");
         }
 
-        // Ideally: FourBeatMeasure newMeasure = [MusicalNote.G, MusicalNote.E, MusicalNote.G, MusicalNote.A];
+        // Ideally: FourBeatMeasure newMeasure = [MusicalNote.G, ...];
         var newMeasure = new FourBeatMeasure();
         newMeasure[0] = MusicalNote.G;
         newMeasure[1] = MusicalNote.E;
@@ -34,31 +58,7 @@ public static class Demo
         return Task.CompletedTask;
     }
 
-    // BEFORE FEATURE: ref readonly method parameters
-    public static ReadOnlySpan<int> OldCreateSpan(ref int c)
-    {
-        c++;
-        return new ReadOnlySpan<int>(ref c);
-    }
-
-    // FEATURE: ref readonly method parameters
-    public static ReadOnlySpan<int> NewCreateSpan(ref readonly int c)
-        => new ReadOnlySpan<int>(in c);
+    public enum MusicalNote { A, B, C, D, E, F, G }
 
     private sealed class FortyTwoHolder { public int FortyTwo = 42; }
-
-    // BEFORE FEATURE: Inline arrays
-    public struct OldFourBeatMeasure
-    {
-        internal unsafe fixed int Notes[4];
-    }
-
-    // FEATURE: Inline arrays
-    [InlineArray(4)]
-    public struct FourBeatMeasure
-    {
-        private MusicalNote _note0;
-    }
-
-    public enum MusicalNote { A, B, C, D, E, F, G }
 }

@@ -1,4 +1,5 @@
 ﻿// ReSharper disable All
+
 namespace Trit.DemoConsole._1_PrimaryConstructors;
 
 public static class Demo
@@ -7,12 +8,12 @@ public static class Demo
     {
         var sandwich = new Sandwich(Ingredient.Ham, Ingredient.Jelly, BreadType.WholeGrain);
 
-        WriteLine($"{sandwich}, {(sandwich.IsWholeGrain() ? "it's whole-grain!" : "it's not")}");
+        WriteLine(
+            $"{sandwich}, " +
+            $"{(sandwich.IsWholeGrain() ? "it's whole-grain!" : "it's not")}");
 
         return Task.CompletedTask;
     }
-
-    #region Before
 
     // BEFORE FEATURE: Primary Constructors
     public class OldSandwich : Food
@@ -21,12 +22,12 @@ public static class Demo
         private readonly BreadType _breadType;
 
         [WillBeAppliedToTheConstructor]
-        public OldSandwich(Ingredient firstIngredient, Ingredient? secondIngredient, BreadType breadType)
+        public OldSandwich(Ingredient first, Ingredient? second, BreadType bread)
             : base(nameof(OldSandwich))
         {
-            FirstIngredient = firstIngredient;
-            _secondIngredient = secondIngredient;
-            _breadType = breadType;
+            FirstIngredient = first;
+            _secondIngredient = second;
+            _breadType = bread;
         }
 
         public Ingredient FirstIngredient { get; }
@@ -36,44 +37,47 @@ public static class Demo
         public bool IsWholeGrain() => _breadType == BreadType.WholeGrain;
 
         public override string ToString() =>
-            $"{_breadType} bread with {FirstIngredient}{(_secondIngredient.HasValue ? $" and {_secondIngredient}" : "")}";
+            $"{_breadType} bread with {FirstIngredient}" +
+            $"{(_secondIngredient.HasValue ? $" and {_secondIngredient}" : "")}";
     }
-
-    #endregion
-
-    #region After
 
     [method: WillBeAppliedToTheConstructor]
     // FEATURE: Primary Constructors
-    public class Sandwich(Ingredient firstIngredient, Ingredient? secondIngredient, BreadType breadType)
+    public class Sandwich(Ingredient first, Ingredient? second, BreadType bread)
         : Food(name: nameof(Sandwich))
     {
-        public Sandwich() : this(Ingredient.PeanutButter, Ingredient.Jelly, BreadType.Sourdough) { }
-
         // The compiler hints to use this property in ToString,
-        // because with how it's written now: two private backing fields are created!
-        public Ingredient FirstIngredient { get; } = firstIngredient;
+        // because now two private backing fields are created!
+        public Ingredient FirstIngredient { get; } = first;
 
-        public Ingredient? SecondIngredient => secondIngredient;
+        public Ingredient? SecondIngredient => second;
 
-        public bool IsWholeGrain() => breadType == BreadType.WholeGrain;
+        public bool IsWholeGrain() => bread == BreadType.WholeGrain;
 
         public override string ToString() =>
-            $"{breadType} bread with {firstIngredient}{(secondIngredient.HasValue ? $"and {secondIngredient}" : "")}";
+            $"{bread} bread with {first}{(second.HasValue ? $"and {second}" : "")}";
     }
 
-    #endregion
+    public enum Ingredient
+    {
+        PeanutButter,
+        Jelly,
+        Ham,
+        Cheese
+    }
 
-    #region Support
+    public enum BreadType
+    {
+        WholeGrain,
+        Sourdough,
+        Rye
+    }
 
-    public enum Ingredient { PeanutButter, Jelly, Ham, Cheese }
-
-    public enum BreadType { WholeGrain, Sourdough, Rye }
-
-    public class Food(string name) { public string Name { get; } = name; }
+    public class Food(string name)
+    {
+        public string Name { get; } = name;
+    }
 
     [AttributeUsage(AttributeTargets.Constructor)]
     public sealed class WillBeAppliedToTheConstructorAttribute : Attribute;
-
-    #endregion
 }
