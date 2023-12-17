@@ -21,6 +21,7 @@ public static class Demo
 
     // FEATURE: Inline arrays
     [InlineArray(4)]
+    [CollectionBuilder(typeof(FourBeatMeasureFactory), nameof(FourBeatMeasureFactory.Create))]
     public struct FourBeatMeasure
     {
         private MusicalNote _note0;
@@ -47,12 +48,7 @@ public static class Demo
             WriteLine($"The old notes are: {n[0]}, {n[1]}, {n[2]}, {n[3]}");
         }
 
-        // Ideally: FourBeatMeasure newMeasure = [MusicalNote.G, ...];
-        var newMeasure = new FourBeatMeasure();
-        newMeasure[0] = MusicalNote.G;
-        newMeasure[1] = MusicalNote.E;
-        newMeasure[2] = MusicalNote.G;
-        newMeasure[3] = MusicalNote.A;
+        FourBeatMeasure newMeasure = [MusicalNote.G, MusicalNote.E, MusicalNote.G, MusicalNote.A];
         WriteLine($"The new notes are: {string.Join(", ", newMeasure[..4].ToArray())}");
 
         return Task.CompletedTask;
@@ -61,4 +57,24 @@ public static class Demo
     public enum MusicalNote { A, B, C, D, E, F, G }
 
     private sealed class FortyTwoHolder { public int FortyTwo = 42; }
+
+    public static class FourBeatMeasureFactory
+    {
+        public static FourBeatMeasure Create(ReadOnlySpan<MusicalNote> items)
+        {
+            if (items.Length != 4)
+            {
+                throw new ArgumentException(
+                    $"Expected exactly 4 notes for a four-beat measure but got {items.Length} instead",
+                    nameof(items));
+            }
+
+            var newMeasure = new FourBeatMeasure();
+            for (int i = 3; i >= 0; i--)
+            {
+                newMeasure[i] = items[i];
+            }
+            return newMeasure;
+        }
+    }
 }
