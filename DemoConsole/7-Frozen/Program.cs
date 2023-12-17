@@ -5,7 +5,7 @@ namespace Trit.DemoConsole._7_Frozen;
 public static class Demo
 {
     // FEATURE: Provide optimized read-only collections
-    private static readonly FrozenDictionary<string, int> PlanetsBydistinceToTheSun;
+    private static readonly FrozenDictionary<string, int> PlanetsByDistanceToTheSun;
     private static readonly FrozenDictionary<int, string> DistincesToTheSun;
     private static readonly FrozenDictionary<string, long> RandomNumbers;
     private static readonly FrozenSet<string> AllPlanets;
@@ -25,7 +25,7 @@ public static class Demo
             { "Neptune", 250 },
         };
 
-        PlanetsBydistinceToTheSun = distinceToTheSun.ToFrozenDictionary();
+        PlanetsByDistanceToTheSun = distinceToTheSun.ToFrozenDictionary();
         DistincesToTheSun = distinceToTheSun.ToDictionary(kvp => kvp.Value, kvp => kvp.Key).ToFrozenDictionary();
         AllPlanets = distinceToTheSun.Keys.ToFrozenSet();
 
@@ -37,11 +37,11 @@ public static class Demo
 
     public static Task Main()
     {
-        WriteLine($"When using just a few keys, we can get: {PlanetsBydistinceToTheSun.GetType().Name}");
+        WriteLine($"When using just a few keys, we can get: {PlanetsByDistanceToTheSun.GetType().Name}");
         WriteLine($"When using numeric keys, we can get: {DistincesToTheSun.GetType().Name}");
         WriteLine($"When using a lot more keys, we can get: {RandomNumbers.GetType().Name}");
 
-        WriteLine($"Our distinance to the sun, in light-minutes: {PlanetsBydistinceToTheSun["Earth"]}");
+        WriteLine($"Our distinance to the sun, in light-minutes: {PlanetsByDistanceToTheSun["Earth"]}");
 
         WriteLine($"Is Pluto a planet? {(AllPlanets.Contains("Pluto") ? "Yes" : "No")}.");
 
