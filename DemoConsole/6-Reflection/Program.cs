@@ -20,6 +20,8 @@ public static class Demo
         FieldInfo field = typeof(BankVault)
             .GetField("_combinationCode",
                 BindingFlags.Instance | BindingFlags.NonPublic)!;
+        // Alternatively, this code is generated with Reflection.Emit or Linq.Expressions
+        // which isn't AOT-friendly
         var oldCombinationCode = field.GetValue(bankVault);
         WriteLine($"The (old) combination code is: {oldCombinationCode}");
 
